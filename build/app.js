@@ -10,17 +10,16 @@ const RoomMember_1 = __importDefault(require("./RoomMember"));
 //App
 exports.app = express_ws_1.default(express_1.default()).app;
 //Serve static files
-// app.use(express.static('static/'));
-console.log(__dirname);
+exports.app.use(express_1.default.static('static/'));
 //*Websocket Routes
-exports.app.ws("/rooms/:ID", function (ws, req, next) {
+exports.app.ws("/room/:ID", function (ws, req, next) {
     try {
         const owner = req.params.owner ? true : false;
-        const user = new RoomMember_1.default(ws.send.bind(ws), req.params.ID, req.params.name, owner);
+        const user = new RoomMember_1.default(ws.send.bind(ws), req.params.ID, owner);
         //Set up socket handlers
         ws.on('message', function (data) {
             try {
-                user.handleNewChatMsg(data);
+                user.handleMessage(data);
             }
             catch (e) {
                 console.error(e);
@@ -38,4 +37,7 @@ exports.app.ws("/rooms/:ID", function (ws, req, next) {
     catch (e) {
         console.error(e);
     }
+});
+exports.app.get("/room/:ID", function (req, res, next) {
+    res.sendFile(`${__dirname}/chat.html`);
 });

@@ -6,23 +6,21 @@ import RoomMember from "./RoomMember";
 export const {app} = expressWs(express());
 
 //Serve static files
-// app.use(express.static('static/'));
+app.use(express.static('static/'));
 
-console.log(__dirname);
 //*Websocket Routes
-app.ws("/rooms/:ID", function (ws, req, next) {
+app.ws("/room/:ID", function (ws, req, next) {
     try {
         const owner = req.params.owner ? true : false;
         const user = new RoomMember(
             ws.send.bind(ws),
             req.params.ID,
-            req.params.name,
-            owner)
+            owner);
 
         //Set up socket handlers
         ws.on('message', function(data) {
             try {
-                user.handleNewChatMsg(data)
+                user.handleMessage(data)
             }
             catch (e) {
                 console.error(e);
@@ -41,4 +39,8 @@ app.ws("/rooms/:ID", function (ws, req, next) {
     catch (e) {
         console.error(e);
     }
+});
+
+app.get("/room/:ID", function(req, res, next) {
+    res.sendFile(`${__dirname}/chat.html`);
 });

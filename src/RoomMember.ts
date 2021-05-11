@@ -6,10 +6,10 @@ export default class RoomMember{
     name: string;
     isOwner: boolean
 
-    constructor(send: Function, roomID: string, name: string, isOwner = false) {
+    constructor(send: Function, roomID: string, isOwner = false) {
         this._send = send;
         this.room = Room.get(roomID);
-        this.name = name;
+        this.name = "pending"; //Set in handleJoin
         this.isOwner = isOwner;
 
         console.log(`${this.name} joined ${this.room.id}`);
@@ -24,34 +24,41 @@ export default class RoomMember{
         }
     }
 
-    handleJoin() {
+    handleJoin(username: string) {
+        this.name = username;
         this.room.join(this);
         this.room.broadcast({
-            type: "join",
-            payload: `${this.name} joined`
+            type: "note",
+            text: `${this.name} joined ${this.room.id}`
         });
     }
 
-    handleChatMsg(msg: string) {
+    handleChat(msg: string) {
         this.room.broadcast({
             name: this.name,
             type: "chat",
-            payload: msg
+            text: msg
         });
     }
 
-    handleNewChatMsg(jsonMsg: any) { //!Type
-        const msg = JSON.parse(jsonMsg);
 
+    // handleMessage(jsonData: any) {
+    //     let msg = JSON.parse(jsonData);
+
+    //     if (msg.type === "join") this.handleJoin(msg.name);
+    //     else if (msg.type === "chat") this.handleChat(msg.text);
+    //     else throw new Error(`bad message: ${msg.type}`);
+    // }
+
+    handleMessage(jsonMsg: any) { //!Type
+        const msg = JSON.parse(jsonMsg);
+        console.log(msg);
         switch (msg.type) {
             case "join":
-                this.handleJoin();
-                break;
-            case "leave":
-                this.handleCloseConnection();
+                this.handleJoin(msg.name);
                 break;
             case "chat":
-                this.handleChatMsg(msg);
+                this.handleChat(msg.text);
                 break;
             default:
                 throw new Error(`Unknown message type: ${msg.type}`);
@@ -59,10 +66,11 @@ export default class RoomMember{
     }
 
     handleCloseConnection() {
+        console.log("leaving");
         this.room.leave(this);
         this.room.broadcast({
-            type: "leave",
-            payload: `${this.name} has left the room`
+            type: "note",
+            text: `${this.name} has left the room`
         });
     }
 }
