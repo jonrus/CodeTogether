@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest -i",
     "build": "npx tsc",
-    "dev": "npx tsc && node ./build/server.js"
+    "dev": "node ./build/server.js"
   },
   "author": "Jon Russell",
   "license": "MIT",

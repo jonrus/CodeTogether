@@ -1,16 +1,16 @@
 import Room from "./Room";
 
 export default class RoomMember{
-    _send: Function;
+    protected _send: Function;
     room: Room;
     name: string;
-    userLevel: number;
+    isOwner: boolean
 
-    constructor(send: Function, roomID: string, name: string, userLevel = 1) {
+    constructor(send: Function, roomID: string, name: string, isOwner = false) {
         this._send = send;
         this.room = Room.get(roomID);
         this.name = name;
-        this.userLevel = userLevel;
+        this.isOwner = isOwner;
 
         console.log(`${this.name} joined ${this.room.id}`);
     }
@@ -40,7 +40,7 @@ export default class RoomMember{
         });
     }
 
-    handleNewChatMsg(jsonMsg: string) {
+    handleNewChatMsg(jsonMsg: any) { //!Type
         const msg = JSON.parse(jsonMsg);
 
         switch (msg.type) {

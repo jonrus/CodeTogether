@@ -5,11 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Room_1 = __importDefault(require("./Room"));
 class RoomMember {
-    constructor(send, roomID, name, userLevel = 1) {
+    constructor(send, roomID, name, isOwner = false) {
         this._send = send;
         this.room = Room_1.default.get(roomID);
         this.name = name;
-        this.userLevel = userLevel;
+        this.isOwner = isOwner;
         console.log(`${this.name} joined ${this.room.id}`);
     }
     send(data) {
