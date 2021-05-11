@@ -41,15 +41,6 @@ export default class RoomMember{
         });
     }
 
-
-    // handleMessage(jsonData: any) {
-    //     let msg = JSON.parse(jsonData);
-
-    //     if (msg.type === "join") this.handleJoin(msg.name);
-    //     else if (msg.type === "chat") this.handleChat(msg.text);
-    //     else throw new Error(`bad message: ${msg.type}`);
-    // }
-
     handleMessage(jsonMsg: any) { //!Type
         const msg = JSON.parse(jsonMsg);
         console.log(msg);
