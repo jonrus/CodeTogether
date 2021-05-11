@@ -2,5 +2,5 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = require("./app");
 app_1.app.listen(3000, () => {
-    console.log("Server started: http://localhost:3000");
+    console.log("Server started: http://127.0.0.1:3000");
 });
