@@ -10,7 +10,7 @@ class RoomMember {
         this.room = Room_1.default.get(roomID);
         this.name = "pending"; //Set in handleJoin
         this.isOwner = isOwner;
-        console.log(`${this.name} joined ${this.room.id}`);
+        console.log("New ws client...");
     }
     send(data) {
         try {
@@ -27,6 +27,7 @@ class RoomMember {
             type: "note",
             text: `${this.name} joined ${this.room.id}`
         });
+        console.log(`${this.name} joined ${this.room.id}`);
     }
     handleChat(msg) {
         this.room.broadcast({

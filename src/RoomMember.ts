@@ -12,7 +12,7 @@ export default class RoomMember{
         this.name = "pending"; //Set in handleJoin
         this.isOwner = isOwner;
 
-        console.log(`${this.name} joined ${this.room.id}`);
+        console.log("New ws client...");
     }
 
     send(data: unknown) { //!Set type/interface
@@ -31,6 +31,7 @@ export default class RoomMember{
             type: "note",
             text: `${this.name} joined ${this.room.id}`
         });
+        console.log(`${this.name} joined ${this.room.id}`);
     }
 
     handleChat(msg: string) {
