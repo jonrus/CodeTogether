@@ -19,12 +19,12 @@ class Room {
     //Add a member to the room
     join(member) {
         this.members.add(member);
-        console.log(this.memberList());
         this.broadcast(this.memberList());
     }
     //Remove a member from the room
     leave(member) {
         this.members.delete(member);
+        this.broadcast(this.memberList());
     }
     //Send message to all memebers of the room
     broadcast(data) {
@@ -38,7 +38,7 @@ class Room {
         for (let member of this.members) {
             mems.push(member.name);
         }
-        return ({ type: "members", name: mems });
+        return ({ type: "members", names: mems });
     }
 }
 exports.default = Room;

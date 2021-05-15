@@ -25,13 +25,13 @@ export default class Room {
     //Add a member to the room
     join(member: RoomMember) { //!
         this.members.add(member);
-        console.log(this.memberList());
         this.broadcast(this.memberList());
     }
 
     //Remove a member from the room
     leave(member: RoomMember) { //!
         this.members.delete(member);
+        this.broadcast(this.memberList());
     }
 
     //Send message to all memebers of the room
@@ -49,6 +49,6 @@ export default class Room {
             mems.push(member.name);
         }
 
-        return ({type: "members", name: mems});
+        return ({type: "members", names: mems});
     }
 }
