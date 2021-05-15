@@ -25,6 +25,8 @@ export default class Room {
     //Add a member to the room
     join(member: RoomMember) { //!
         this.members.add(member);
+        console.log(this.memberList());
+        this.broadcast(this.memberList());
     }
 
     //Remove a member from the room
@@ -37,5 +39,16 @@ export default class Room {
         for (let mem of this.members) {
             mem.send(JSON.stringify(data));
         }
+    }
+
+    //Create a JSON object to send to out all members of the room
+    memberList() {
+        const mems: string[] = [];
+
+        for (let member of this.members) {
+            mems.push(member.name);
+        }
+
+        return ({type: "members", name: mems});
     }
 }
