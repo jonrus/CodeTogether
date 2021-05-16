@@ -1,6 +1,8 @@
 import RoomMember from "./RoomMember";
+import {ChangeSet, Text} from "@codemirror/state";
+import {Update} from "@codemirror/collab";
 /*
-    Room class used to session rooms
+    Room class used to manage room, members and document changes
 */
 
 const currentRooms = new Map();

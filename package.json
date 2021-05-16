@@ -11,6 +11,8 @@
   "author": "Jon Russell",
   "license": "MIT",
   "dependencies": {
+    "@codemirror/collab": "^0.18.2",
+    "@codemirror/state": "^0.18.7",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "express-ws": "^4.0.0"
