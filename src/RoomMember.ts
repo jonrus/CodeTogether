@@ -9,7 +9,7 @@ export default class RoomMember{
     constructor(send: Function, roomID: string, isOwner = false) {
         this._send = send;
         this.room = Room.get(roomID);
-        this.name = "pending"; //Set in handleJoin
+        this.name = ""; //Set in handleJoin
         this.isOwner = isOwner;
 
         console.log("New ws client...");
@@ -29,7 +29,7 @@ export default class RoomMember{
         this.room.join(this);
         this.room.broadcast({
             type: "note",
-            text: `${this.name} joined ${this.room.id}`
+            text: `${this.name} joined the room!`
         });
         console.log(`${this.name} joined ${this.room.id}`);
     }
@@ -62,7 +62,7 @@ export default class RoomMember{
         this.room.leave(this);
         this.room.broadcast({
             type: "note",
-            text: `${this.name} has left the room`
+            text: `${this.name} has left the room!`
         });
     }
 }
