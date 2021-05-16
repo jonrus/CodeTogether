@@ -9,13 +9,14 @@ export default class RoomMember{
     constructor(send: Function, roomID: string, isOwner = false) {
         this._send = send;
         this.room = Room.get(roomID);
-        this.name = ""; //Set in handleJoin
+        this.name = "";
         this.isOwner = isOwner;
 
         console.log("New ws client...");
     }
 
-    send(data: unknown) { //!Set type/interface
+    send(data: string) {
+        console.log(`Data to send: ${data}`);
         try {
             this._send(data);
         }
@@ -31,15 +32,29 @@ export default class RoomMember{
             type: "note",
             text: `${this.name} joined the room!`
         });
+
         console.log(`${this.name} joined ${this.room.id}`);
+
+        //Get the current document from the server
+        this.handleEditorGetDoc();
     }
 
     handleChat(msg: string) {
         this.room.broadcast({
             name: this.name,
             type: "chat",
-            text: msg
+            //text: msg
+            text: `${this.name}: ${msg}`
         });
+    }
+
+    handleEditorGetDoc() {
+        const data = JSON.stringify({
+            type: "editor-Doc",
+            version: this.room.docUpdates.length,
+            doc: this.room.doc.toString()});
+
+        this._send(data);
     }
 
     handleMessage(jsonMsg: any) { //!Type
@@ -52,13 +67,15 @@ export default class RoomMember{
             case "chat":
                 this.handleChat(msg.text);
                 break;
+            case "editor-getDocument":
+                this.handleEditorGetDoc();
+                break;
             default:
                 throw new Error(`Unknown message type: ${msg.type}`);
         }
     }
 
     handleCloseConnection() {
-        console.log("leaving");
         this.room.leave(this);
         this.room.broadcast({
             type: "note",

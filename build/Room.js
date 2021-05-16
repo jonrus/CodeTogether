@@ -1,12 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const state_1 = require("@codemirror/state");
 /*
-    Room class used to session rooms
+    Room class used to manage room, members and document changes
 */
 const currentRooms = new Map();
 class Room {
     constructor(roomID) {
         this.id = roomID;
+        this.docUpdates = [];
+        this.doc = state_1.Text.of(["Text"]);
         this.members = new Set();
     }
     //Static method to get room, or add it to the map if it doesn't exist
@@ -34,11 +37,11 @@ class Room {
     }
     //Create a JSON object to send to out all members of the room
     memberList() {
-        const mems = [];
+        const names = [];
         for (let member of this.members) {
-            mems.push(member.name);
+            names.push(member.name);
         }
-        return ({ type: "members", names: mems });
+        return ({ type: "members", names });
     }
 }
 exports.default = Room;

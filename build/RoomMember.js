@@ -13,8 +13,10 @@ class RoomMember {
         console.log("New ws client...");
     }
     send(data) {
+        console.log(`Data to send: ${data}`);
         try {
-            this._send(data);
+            const res = this._send(data);
+            console.log(res);
         }
         catch {
             console.log(`Unable to send data to user: ${this.name}`);
@@ -28,13 +30,24 @@ class RoomMember {
             text: `${this.name} joined the room!`
         });
         console.log(`${this.name} joined ${this.room.id}`);
+        //Get the current document from the server
+        this.handleEditorGetDoc();
     }
     handleChat(msg) {
         this.room.broadcast({
             name: this.name,
             type: "chat",
-            text: msg
+            //text: msg
+            text: `${this.name}: ${msg}`
         });
+    }
+    handleEditorGetDoc() {
+        const data = JSON.stringify({
+            type: "editor-Doc",
+            version: this.room.docUpdates.length,
+            doc: this.room.doc.toString()
+        });
+        this._send(data);
     }
     handleMessage(jsonMsg) {
         const msg = JSON.parse(jsonMsg);
@@ -46,12 +59,14 @@ class RoomMember {
             case "chat":
                 this.handleChat(msg.text);
                 break;
+            case "editor-getDocument":
+                this.handleEditorGetDoc();
+                break;
             default:
                 throw new Error(`Unknown message type: ${msg.type}`);
         }
     }
     handleCloseConnection() {
-        console.log("leaving");
         this.room.leave(this);
         this.room.broadcast({
             type: "note",

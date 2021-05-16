@@ -18,9 +18,13 @@ export default class Room {
     }
 
     id: string;
+    doc: Text;
+    docUpdates: Update[];
     members: Set<RoomMember>; //!Determine type/interface for members
     constructor(roomID: string) {
         this.id = roomID;
+        this.docUpdates = [];
+        this.doc = Text.of(["Text"]);
         this.members = new Set();
     }
 
@@ -45,12 +49,12 @@ export default class Room {
 
     //Create a JSON object to send to out all members of the room
     memberList() {
-        const mems: string[] = [];
+        const names: string[] = [];
 
         for (let member of this.members) {
-            mems.push(member.name);
+            names.push(member.name);
         }
 
-        return ({type: "members", names: mems});
+        return ({type: "members", names});
     }
 }
