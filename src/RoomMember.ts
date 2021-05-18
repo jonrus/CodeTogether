@@ -1,3 +1,4 @@
+import { ChangeSet } from "@codemirror/state";
 import Room from "./Room";
 
 export default class RoomMember{
@@ -57,9 +58,29 @@ export default class RoomMember{
         this._send(data);
     }
 
+    handleUpdates(msg: any) {
+        //Client and Server an in sync
+        console.log("Change version: ", msg.version);
+        if (msg.version === this.room.docUpdates.length) {
+            for (let update of msg.updates) {
+                let changes = ChangeSet.fromJSON(update.changes);
+                this.room.docUpdates.push({changes, clientID: update.clientID});
+                this.room.doc = changes.apply(this.room.doc);
+            }
+
+            const sendData = {
+                type: "editor-Changes",
+                changes: this.room.docUpdates
+            };
+            this.room.broadcast(sendData);
+        }
+        console.log("V:", this.room.docUpdates.length);
+    }
+
     handleMessage(jsonMsg: any) { //!Type
         const msg = JSON.parse(jsonMsg);
-        console.log(msg);
+        console.log("New Message:", msg);
+
         switch (msg.type) {
             case "join":
                 this.handleJoin(msg.name);
@@ -69,6 +90,9 @@ export default class RoomMember{
                 break;
             case "editor-getDocument":
                 this.handleEditorGetDoc();
+                break;
+            case "editor-PushChanges":
+                this.handleUpdates(msg);
                 break;
             default:
                 throw new Error(`Unknown message type: ${msg.type}`);

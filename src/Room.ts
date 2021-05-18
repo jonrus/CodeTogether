@@ -19,7 +19,7 @@ export default class Room {
 
     id: string;
     doc: Text;
-    docUpdates: Update[];
+    docUpdates: Update[] = [];
     members: Set<RoomMember>; //!Determine type/interface for members
     constructor(roomID: string) {
         this.id = roomID;

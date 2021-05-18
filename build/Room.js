@@ -7,6 +7,7 @@ const state_1 = require("@codemirror/state");
 const currentRooms = new Map();
 class Room {
     constructor(roomID) {
+        this.docUpdates = [];
         this.id = roomID;
         this.docUpdates = [];
         this.doc = state_1.Text.of(["Text"]);
