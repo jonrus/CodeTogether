@@ -24,7 +24,7 @@ export default class Room {
     constructor(roomID: string) {
         this.id = roomID;
         this.docUpdates = [];
-        this.doc = Text.of(["Text"]);
+        this.doc = Text.of([""]);
         this.members = new Set();
     }
 
@@ -42,15 +42,30 @@ export default class Room {
 
     //Send message to all memebers of the room
     broadcast(data: Object) { //!Detrmine data type/interface
+        const toSend = JSON.stringify(data);
         for (let mem of this.members) {
-            mem.send(JSON.stringify(data));
+            mem.send(toSend);
+        }
+    }
+
+    /*
+        Send changes to all room members, but only changes made after the point
+        they joined the room.
+        Perhaps it will save on some bandwidth, and processing time for at user?
+    */
+    broadcastChanges() {
+        for (let mem of this.members) {
+            const data = JSON.stringify({
+                type: "editor-Changes",
+                changes: this.docUpdates.slice(mem.docVersion)
+            });
+            mem.send(data);
         }
     }
 
     //Create a JSON object to send to out all members of the room
     memberList() {
         const names: string[] = [];
-
         for (let member of this.members) {
             names.push(member.name);
         }

@@ -10,7 +10,7 @@ class Room {
         this.docUpdates = [];
         this.id = roomID;
         this.docUpdates = [];
-        this.doc = state_1.Text.of(["Text"]);
+        this.doc = state_1.Text.of([""]);
         this.members = new Set();
     }
     //Static method to get room, or add it to the map if it doesn't exist
@@ -32,8 +32,23 @@ class Room {
     }
     //Send message to all memebers of the room
     broadcast(data) {
+        const toSend = JSON.stringify(data);
         for (let mem of this.members) {
-            mem.send(JSON.stringify(data));
+            mem.send(toSend);
+        }
+    }
+    /*
+        Send changes to all room members, but only changes made after the point
+        they joined the room.
+        Perhaps it will save on some bandwidth, and processing time for at user?
+    */
+    broadcastChanges() {
+        for (let mem of this.members) {
+            const data = JSON.stringify({
+                type: "editor-Changes",
+                changes: this.docUpdates.slice(mem.docVersion)
+            });
+            mem.send(data);
         }
     }
     //Create a JSON object to send to out all members of the room

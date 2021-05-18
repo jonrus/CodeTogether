@@ -5,13 +5,15 @@ export default class RoomMember{
     protected _send: Function;
     room: Room;
     name: string;
-    isOwner: boolean
+    isOwner: boolean;
+    docVersion: number;
 
     constructor(send: Function, roomID: string, isOwner = false) {
         this._send = send;
         this.room = Room.get(roomID);
         this.name = "";
         this.isOwner = isOwner;
+        this.docVersion = 0;
 
         console.log("New ws client...");
     }
@@ -51,9 +53,11 @@ export default class RoomMember{
     }
 
     handleEditorGetDoc() {
+        this.docVersion = this.room.docUpdates.length;
+
         const data = JSON.stringify({
             type: "editor-Doc",
-            version: this.room.docUpdates.length,
+            version: this.docVersion,
             doc: this.room.doc.toString()});
 
         this.send(data);
@@ -68,11 +72,7 @@ export default class RoomMember{
                 this.room.doc = changes.apply(this.room.doc);
             }
 
-            const sendData = {
-                type: "editor-Changes",
-                changes: this.room.docUpdates
-            };
-            this.room.broadcast(sendData);
+            this.room.broadcastChanges();
         }
     }
 

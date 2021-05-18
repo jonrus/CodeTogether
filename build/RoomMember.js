@@ -11,6 +11,7 @@ class RoomMember {
         this.room = Room_1.default.get(roomID);
         this.name = "";
         this.isOwner = isOwner;
+        this.docVersion = 0;
         console.log("New ws client...");
     }
     send(data) {
@@ -43,9 +44,10 @@ class RoomMember {
         });
     }
     handleEditorGetDoc() {
+        this.docVersion = this.room.docUpdates.length;
         const data = JSON.stringify({
             type: "editor-Doc",
-            version: this.room.docUpdates.length,
+            version: this.docVersion,
             doc: this.room.doc.toString()
         });
         this.send(data);
@@ -58,11 +60,7 @@ class RoomMember {
                 this.room.docUpdates.push({ changes, clientID: update.clientID });
                 this.room.doc = changes.apply(this.room.doc);
             }
-            const sendData = {
-                type: "editor-Changes",
-                changes: this.room.docUpdates
-            };
-            this.room.broadcast(sendData);
+            this.room.broadcastChanges();
         }
     }
     handleMessage(jsonMsg) {
