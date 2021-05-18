@@ -43,10 +43,12 @@ class Room {
         Perhaps it will save on some bandwidth, and processing time for at user?
     */
     broadcastChanges() {
+        const cursors = this.memberCursors();
         for (let mem of this.members) {
             const data = JSON.stringify({
                 type: "editor-Changes",
-                changes: this.docUpdates.slice(mem.docVersion)
+                changes: this.docUpdates.slice(mem.docVersion),
+                cursors
             });
             mem.send(data);
         }
@@ -58,6 +60,18 @@ class Room {
             names.push(member.name);
         }
         return ({ type: "members", names });
+    }
+    //Create an array containing all room member cursor info
+    memberCursors() {
+        const mems = [];
+        for (let mem of this.members) {
+            mems.push({
+                name: mem.name,
+                selection: mem.selection,
+                color: mem.color
+            });
+        }
+        return mems;
     }
 }
 exports.default = Room;

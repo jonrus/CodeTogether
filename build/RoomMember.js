@@ -10,8 +10,10 @@ class RoomMember {
         this._send = send;
         this.room = Room_1.default.get(roomID);
         this.name = "";
+        this.color = "red"; //!Set color
         this.isOwner = isOwner;
         this.docVersion = 0;
+        this.selection = { from: 0, to: 0 };
         console.log("New ws client...");
     }
     send(data) {
@@ -55,8 +57,10 @@ class RoomMember {
     handleUpdates(msg) {
         //Client and Server an in sync
         if (msg.version === this.room.docUpdates.length) {
+            this.selection = msg.selection;
+            console.log("this selection", this.selection);
             for (let update of msg.updates) {
-                let changes = state_1.ChangeSet.fromJSON(update.changes);
+                const changes = state_1.ChangeSet.fromJSON(update.changes);
                 this.room.docUpdates.push({ changes, clientID: update.clientID });
                 this.room.doc = changes.apply(this.room.doc);
             }
