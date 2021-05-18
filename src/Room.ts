@@ -1,5 +1,5 @@
 import RoomMember from "./RoomMember";
-import {ChangeSet, Text} from "@codemirror/state";
+import {Text} from "@codemirror/state";
 import {Update} from "@codemirror/collab";
 /*
     Room class used to manage room, members and document changes
@@ -20,7 +20,7 @@ export default class Room {
     id: string;
     doc: Text;
     docUpdates: Update[] = [];
-    members: Set<RoomMember>; //!Determine type/interface for members
+    members: Set<RoomMember>;
     constructor(roomID: string) {
         this.id = roomID;
         this.docUpdates = [];
@@ -29,19 +29,19 @@ export default class Room {
     }
 
     //Add a member to the room
-    join(member: RoomMember) { //!
+    join(member: RoomMember) {
         this.members.add(member);
         this.broadcast(this.memberList());
     }
 
     //Remove a member from the room
-    leave(member: RoomMember) { //!
+    leave(member: RoomMember) {
         this.members.delete(member);
         this.broadcast(this.memberList());
     }
 
     //Send message to all memebers of the room
-    broadcast(data: unknown) { //!Detrmine data type/interface
+    broadcast(data: Object) { //!Detrmine data type/interface
         for (let mem of this.members) {
             mem.send(JSON.stringify(data));
         }

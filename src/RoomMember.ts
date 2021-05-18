@@ -44,8 +44,9 @@ export default class RoomMember{
         this.room.broadcast({
             name: this.name,
             type: "chat",
-            //text: msg
-            text: `${this.name}: ${msg}`
+            text: `${this.name}: ${msg}`,
+            msg,
+            from: this.name
         });
     }
 
@@ -55,12 +56,11 @@ export default class RoomMember{
             version: this.room.docUpdates.length,
             doc: this.room.doc.toString()});
 
-        this._send(data);
+        this.send(data);
     }
 
     handleUpdates(msg: any) {
         //Client and Server an in sync
-        console.log("Change version: ", msg.version);
         if (msg.version === this.room.docUpdates.length) {
             for (let update of msg.updates) {
                 let changes = ChangeSet.fromJSON(update.changes);
@@ -74,7 +74,6 @@ export default class RoomMember{
             };
             this.room.broadcast(sendData);
         }
-        console.log("V:", this.room.docUpdates.length);
     }
 
     handleMessage(jsonMsg: any) { //!Type
