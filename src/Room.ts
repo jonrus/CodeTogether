@@ -41,7 +41,7 @@ export default class Room {
     }
 
     //Send message to all memebers of the room
-    broadcast(data: Object) { //!Detrmine data type/interface
+    broadcast(data: Object) {
         const toSend = JSON.stringify(data);
         for (let mem of this.members) {
             mem.send(toSend);

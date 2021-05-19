@@ -1,4 +1,5 @@
 import { ChangeSet } from "@codemirror/state";
+import randomColor from "randomcolor";
 import Room from "./Room";
 
 export default class RoomMember{
@@ -14,16 +15,16 @@ export default class RoomMember{
         this._send = send;
         this.room = Room.get(roomID);
         this.name = "";
-        this.color = "red"; //!Set color
+        this.color = randomColor({luminosity: "dark"});
         this.isOwner = isOwner;
         this.docVersion = 0;
-        this.selection = {from: 0, to: 0};
+        this.selection = {from: 0, to: 0, head: 0};
 
         console.log("New ws client...");
     }
 
     send(data: string) {
-        console.log(`Data to send: ${data}`);
+        // console.log(`Data to send: ${data}`);
         try {
             this._send(data);
         }
@@ -70,8 +71,8 @@ export default class RoomMember{
     handleUpdates(msg: any) {
         //Client and Server an in sync
         if (msg.version === this.room.docUpdates.length) {
-            this.selection = msg.selection;
-            console.log("this selection", this.selection);
+            this.selection = msg.selection; //Cursor pos of this update
+
             for (let update of msg.updates) {
                 const changes = ChangeSet.fromJSON(update.changes);
                 this.room.docUpdates.push({changes, clientID: update.clientID});

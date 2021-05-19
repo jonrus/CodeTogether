@@ -4,20 +4,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const state_1 = require("@codemirror/state");
+const randomcolor_1 = __importDefault(require("randomcolor"));
 const Room_1 = __importDefault(require("./Room"));
 class RoomMember {
     constructor(send, roomID, isOwner = false) {
         this._send = send;
         this.room = Room_1.default.get(roomID);
         this.name = "";
-        this.color = "red"; //!Set color
+        this.color = randomcolor_1.default({ luminosity: "dark" });
         this.isOwner = isOwner;
         this.docVersion = 0;
-        this.selection = { from: 0, to: 0 };
+        this.selection = { from: 0, to: 0, head: 0 };
         console.log("New ws client...");
     }
     send(data) {
-        console.log(`Data to send: ${data}`);
+        // console.log(`Data to send: ${data}`);
         try {
             this._send(data);
         }
@@ -57,8 +58,7 @@ class RoomMember {
     handleUpdates(msg) {
         //Client and Server an in sync
         if (msg.version === this.room.docUpdates.length) {
-            this.selection = msg.selection;
-            console.log("this selection", this.selection);
+            this.selection = msg.selection; //Cursor pos of this update
             for (let update of msg.updates) {
                 const changes = state_1.ChangeSet.fromJSON(update.changes);
                 this.room.docUpdates.push({ changes, clientID: update.clientID });
