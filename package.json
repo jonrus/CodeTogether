@@ -6,16 +6,20 @@
   "scripts": {
     "test": "jest -i",
     "build": "npx tsc",
-    "dev": "node ./build/server.js"
+    "dev": "npx nodemon ./build/server.js -w ./build/*"
   },
   "author": "Jon Russell",
   "license": "MIT",
   "dependencies": {
     "@codemirror/collab": "^0.18.2",
     "@codemirror/state": "^0.18.7",
+    "bcrypt": "^5.0.1",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "express-ws": "^4.0.0",
+    "jsonschema": "^1.4.0",
+    "pg": "^8.6.0",
+    "random-word-slugs": "0.0.2",
     "randomcolor": "^0.6.2"
   },
   "devDependencies": {
