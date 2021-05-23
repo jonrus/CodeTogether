@@ -63,5 +63,5 @@ app.use(function(err: any, req: express.Request, res: express.Response, next: ex
     }
     const status = err.status || 500;
     
-    return res.status(status).json({error: {message: err.msg, status}});
+    return res.status(status).json({error: {message: err.message, status}});
 });

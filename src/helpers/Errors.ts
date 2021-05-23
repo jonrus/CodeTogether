@@ -26,3 +26,15 @@ export class Unauth extends ExpressError {
         super(msg, 401);
     }
 }
+
+export class Forbidden extends ExpressError {
+    constructor(msg = "Forbidden") {
+        super(msg, 403);
+    }
+}
+
+export class NotFound extends ExpressError {
+    constructor(msg = "Not Found") {
+        super(msg, 404);
+    }
+}

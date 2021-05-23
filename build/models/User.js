@@ -22,7 +22,6 @@ class User {
                 return user;
             }
         }
-        //No user
         throw new Errors_1.Unauth("Invalid username/password");
     }
     static async register(username, password) {

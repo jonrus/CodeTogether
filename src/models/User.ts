@@ -18,11 +18,9 @@ export default class User {
                 delete user.password;
                 return user;
             }
-        } 
+        }
 
-
-        //No user
-        throw new Unauth("Invalid username/password");        
+        throw new Unauth("Invalid username/password");
     }
 
     static async register(username: string, password: string) {
