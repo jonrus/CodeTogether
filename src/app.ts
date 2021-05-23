@@ -2,11 +2,20 @@ import express from "express";
 import expressWs from "express-ws";
 import RoomMember from "./RoomMember";
 
+//Routes
+import APIRouter from "./routes/api";
+
+
 //App
 export const {app} = expressWs(express());
 
 //Serve static files
 app.use(express.static('static/'));
+app.use(express.json());
+
+//Set up routes
+app.use("/api", APIRouter);
+
 
 //*Websocket Routes
 app.ws("/room/:ID", function (ws, req, next) {
@@ -41,6 +50,18 @@ app.ws("/room/:ID", function (ws, req, next) {
     }
 });
 
+//TODO: Update to always serve the Frontend
 app.get("/room/:ID", function(req, res, next) {
     res.sendFile(`${__dirname}/chat.html`);
+});
+
+
+//Error catch
+app.use(function(err: any, req: express.Request, res: express.Response, next: express.NextFunction) {
+    if (process.env.NODE_ENV === "test") {
+        console.error(err.stack);
+    }
+    const status = err.status || 500;
+    
+    return res.status(status).json({error: {message: err.msg, status}});
 });
