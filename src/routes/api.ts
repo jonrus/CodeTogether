@@ -1,8 +1,9 @@
 import express from "express";
 import jsonschema from "jsonschema";
-import makeJWT from "../helpers/token";
+import {makeJWT, checkJWT} from "../helpers/token";
 import User from "../models/User";
 import {BadRequest} from "../helpers/Errors";
+import Room from "../Room";
 
 //Schemas
 import userAuthSchema from "../schemas/userAuth.json";
@@ -46,6 +47,16 @@ APIRouter.post("/register", async function (req, res, next) {
     catch (e) {
         return next(e);
     }
+});
+
+//Get a new room name
+APIRouter.post("/new-room-name", async function (req, res, next) {
+    const {token} = req.body;
+    if (checkJWT(token)) {
+        const roomName = Room.newRoomName();
+        return res.json({roomName});
+    }
+    return res.json({error: "Invalid account"});
 });
 
 export default APIRouter;

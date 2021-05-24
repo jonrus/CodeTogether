@@ -1,4 +1,5 @@
 import RoomMember from "./RoomMember";
+import {generateSlug, RandomWordOptions} from "random-word-slugs";
 import {Text} from "@codemirror/state";
 import {Update} from "@codemirror/collab";
 /*
@@ -6,6 +7,9 @@ import {Update} from "@codemirror/collab";
 */
 
 const currentRooms = new Map();
+const roomNameOptions: RandomWordOptions<4> = {
+    format: "kebab"
+}
 
 export default class Room {
     //Static method to get room, or add it to the map if it doesn't exist
@@ -15,6 +19,16 @@ export default class Room {
         }
 
         return currentRooms.get(roomID);
+    }
+    static isRoomNameActive(roomID: string) {
+        return currentRooms.has(roomID);
+    }
+    static newRoomName() {
+        let name = generateSlug(4, roomNameOptions);
+        while (Room.isRoomNameActive(name)) {
+            name = generateSlug(4, roomNameOptions);
+        }
+        return name;
     }
 
     id: string;
