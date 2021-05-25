@@ -6,7 +6,7 @@ import {Update} from "@codemirror/collab";
     Room class used to manage room, members and document changes
 */
 
-const currentRooms: Map<string, Room> = new Map();
+const currentRooms = new Map();
 const roomNameOptions: RandomWordOptions<4> = {
     format: "kebab"
 }
@@ -30,8 +30,13 @@ export default class Room {
         }
         return name;
     }
-    //TODO: TEST
     static isNameInUse(roomID: string, name: string) {
+        //This does not do as much checking as it should
+        //If a guest user joins a room and then a registered/signed in user
+        //tries to join the same room, they will get a message (frontend) that
+        //their name is in use... There is no real easy way for a registered 
+        //user to change their name. But I think the chances of this happening
+        //with the expected userbase (0) to be slim.
         const room = currentRooms.get(roomID);
         if (!room) return false;
         return room.memberNameInUse(name);

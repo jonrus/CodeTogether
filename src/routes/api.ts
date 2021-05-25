@@ -65,7 +65,6 @@ APIRouter.get("/room/:roomName", function(req, res) {
     return res.json({isRoom: Room.isRoomNameActive(roomName)});
 });
 
-//TODO: Test this
 //Determine if a username is use in a given room
 APIRouter.get("/room/:roomName/user/:userName", function(req, res) {
     const {roomName, userName} = req.params;
