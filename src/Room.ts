@@ -92,9 +92,9 @@ export default class Room {
 
     //Create a JSON object to send to out all members of the room
     memberList() {
-        const names: string[] = [];
+        const names: object[] = [];
         for (let member of this.members) {
-            names.push(member.name);
+            names.push({name: member.name, color: member.color});
         }
 
         return ({type: "members", names});
@@ -116,8 +116,12 @@ export default class Room {
 
     //Determine if a room has a given username in it
     memberNameInUse(name: string) {
-        const idx = this.memberList().names.indexOf(name);
+        for (let mem of this.members) {
+            if (mem.name === name) return true;
+        }
+        return false;
+        /* const idx = this.memberList().names.indexOf(name);
         if (idx === -1) return false;
-        return true;
+        return true; */
     }
 }
