@@ -49,14 +49,20 @@ APIRouter.post("/register", async function (req, res, next) {
     }
 });
 
-//Get a new room name
-APIRouter.post("/new-room-name", async function (req, res, next) {
+//Get a new room name for signed in users
+APIRouter.post("/room", async function (req, res) {
     const {token} = req.body;
     if (checkJWT(token)) {
         const roomName = Room.newRoomName();
         return res.json({roomName});
     }
     return res.json({error: "Invalid account"});
+});
+
+//Confirm room is created for guest users
+APIRouter.get("/room/:roomName", function(req, res) {
+    const roomName = req.params.roomName;
+    return res.json({isRoom: Room.isRoomNameActive(roomName)});
 });
 
 export default APIRouter;
