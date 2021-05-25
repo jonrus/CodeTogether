@@ -6,7 +6,7 @@ import {Update} from "@codemirror/collab";
     Room class used to manage room, members and document changes
 */
 
-const currentRooms = new Map();
+const currentRooms: Map<string, Room> = new Map();
 const roomNameOptions: RandomWordOptions<4> = {
     format: "kebab"
 }
@@ -29,6 +29,12 @@ export default class Room {
             name = generateSlug(4, roomNameOptions);
         }
         return name;
+    }
+    //TODO: TEST
+    static isNameInUse(roomID: string, name: string) {
+        const room = currentRooms.get(roomID);
+        if (!room) return false;
+        return room.memberNameInUse(name);
     }
 
     id: string;
@@ -101,5 +107,12 @@ export default class Room {
         }
 
         return mems;
+    }
+
+    //Determine if a room has a given username in it
+    memberNameInUse(name: string) {
+        const idx = this.memberList().names.indexOf(name);
+        if (idx === -1) return false;
+        return true;
     }
 }
