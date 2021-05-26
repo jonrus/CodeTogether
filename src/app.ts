@@ -50,9 +50,8 @@ app.ws("/room/:ID", function (ws, req, next) {
     }
 });
 
-//TODO: Update to always serve the Frontend
-app.get("/room/:ID", function(req, res, next) {
-    res.sendFile(`${__dirname}/chat.html`);
+app.get("/*", function(req, res) {
+    res.sendFile(`${__dirname}/index.html`);
 });
 
 
