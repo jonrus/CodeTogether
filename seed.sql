@@ -1,6 +1,5 @@
 DROP DATABASE collabtext;
 CREATE DATABASE collabtext;
-\connect collabtext
 
 CREATE TABLE users (
     username VARCHAR(25) PRIMARY KEY,
