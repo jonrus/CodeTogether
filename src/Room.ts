@@ -6,7 +6,7 @@ import {Update} from "@codemirror/collab";
     Room class used to manage room, members and document changes
 */
 
-const currentRooms = new Map();
+const currentRooms = new Map();  //Default room created at EOF
 const roomNameOptions: RandomWordOptions<4> = {
     format: "kebab"
 }
@@ -63,6 +63,7 @@ export default class Room {
     leave(member: RoomMember) {
         this.members.delete(member);
         this.broadcast(this.memberList());
+        this.cleanUp();
     }
 
     //Send message to all memebers of the room
@@ -124,4 +125,19 @@ export default class Room {
         if (idx === -1) return false;
         return true; */
     }
+
+    //Cleanup code for the room - called when a member leaves
+    cleanUp() {
+        //Leave the default testing room alone
+        //TODO: Decide to clear the document or not.
+        if (this.id === "TestingRoom") return;
+
+        //Determine if the room is empty and delete it if it is.
+        if (this.members.size === 0) {
+            currentRooms.delete(this.id);
+        }
+    }
 }
+
+//Create a default testing room
+currentRooms.set("TestingRoom", new Room("TestingRoom"));
