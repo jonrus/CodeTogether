@@ -1,5 +1,6 @@
 import express from "express";
 import expressWs from "express-ws";
+import path from "path";
 import RoomMember from "./RoomMember";
 
 //Routes
@@ -10,7 +11,7 @@ import APIRouter from "./routes/api";
 export const {app} = expressWs(express());
 
 //Serve static files
-app.use(express.static('static/'));
+app.use(express.static(path.join(__dirname, "..", "frontend"))); // '../fontend'
 app.use(express.json());
 
 //Set up routes
@@ -51,7 +52,7 @@ app.ws("/room/:ID", function (ws, req, next) {
 });
 
 app.get("/*", function(req, res) {
-    res.sendFile(`${__dirname}/index.html`);
+    res.sendFile(path.join(__dirname, "..", "frontend", "index.html"));
 });
 
 
