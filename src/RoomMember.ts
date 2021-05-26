@@ -19,8 +19,6 @@ export default class RoomMember{
         this.isOwner = isOwner;
         this.docVersion = 0;
         this.selection = {from: 0, to: 0, head: 0};
-
-        console.log("New ws client...");
     }
 
     send(data: string) {
@@ -40,8 +38,6 @@ export default class RoomMember{
             type: "note",
             text: `${this.name} joined the room!`
         });
-
-        console.log(`${this.name} joined ${this.room.id}`);
 
         //Get the current document from the server
         this.handleEditorGetDoc();
@@ -85,7 +81,6 @@ export default class RoomMember{
 
     handleMessage(jsonMsg: any) { //!Type
         const msg = JSON.parse(jsonMsg);
-        console.log("New Message:", msg);
 
         switch (msg.type) {
             case "join":
@@ -101,7 +96,8 @@ export default class RoomMember{
                 this.handleUpdates(msg);
                 break;
             default:
-                throw new Error(`Unknown message type: ${msg.type}`);
+                //throw new Error(`Unknown message type: ${msg.type}`);
+                console.log(`Unknown message type: ${msg.type}`);
         }
     }
 
