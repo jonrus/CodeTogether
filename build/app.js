@@ -13,7 +13,7 @@ const api_1 = __importDefault(require("./routes/api"));
 //App
 exports.app = express_ws_1.default(express_1.default()).app;
 //Serve static files
-exports.app.use(express_1.default.static(path_1.default.join(__dirname, "..", "frontend")));
+exports.app.use(express_1.default.static(path_1.default.join(__dirname, "..", "frontend"))); // '../fontend'
 exports.app.use(express_1.default.json());
 //Set up routes
 exports.app.use("/api", api_1.default);
