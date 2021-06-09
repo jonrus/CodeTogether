@@ -10,6 +10,9 @@
   },
   "author": "Jon Russell",
   "license": "MIT",
+  "jest": {
+    "roots": ["<rootDir>/build/"]
+  },
   "dependencies": {
     "@codemirror/collab": "^0.18.2",
     "@codemirror/state": "^0.18.7",

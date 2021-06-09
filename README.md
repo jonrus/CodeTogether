@@ -5,7 +5,7 @@ Code Together! Is a simple collaborative code editor, developed using a privacy 
 See a [live demo](https://code-2gether.herokuapp.com/) of the app deployed to [Heroku](https://www.heroku.com/)
 
 ## Database Schema
-Database is very simply, with only one table; 'users' to store usernames and (hashed) passwords.
+Database is very simple, with only one table; 'users' to store usernames and (hashed) passwords.
 
 ## Frontend
 See the [frontend repo](https://github.com/jonrus/CodeTogether-Frontend) for all of it's commit history.
@@ -25,7 +25,12 @@ See the [frontend repo](https://github.com/jonrus/CodeTogether-Frontend) for all
   - [React useWebSocket v2](https://github.com/robtaussig/react-use-websocket)
 
 ## Setup/Running
-- Clone
-- ```npm i```
-- Seed DB ```psql < dev_seed.sql```
 This repo (the backend) only contains the build/bundled version of the frontend. See Frontend above for more info.
+- Install node modules ```npm i```
+- Seed DB ```psql < dev_seed.sql```
+- Build project ```[npx] tsc```
+- Start server using nodemon ```npm run dev```
+
+## Tests
+Ensure you build the project or the test run will fail.
+- Run tests ```[npx] jest```
