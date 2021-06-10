@@ -5,6 +5,9 @@ import {BadRequest, Unauth} from "../helpers/Errors";
 
 export default class User {
     static async auth(username: string, password: string) {
+        //Try to auth a user
+        //Returns -- Username when username/password is valid
+        //Throws -- Unauth() with incorrect username/password OR unknown username
         const res = await db.query(`
         SELECT username, password
         FROM users
@@ -24,6 +27,9 @@ export default class User {
     }
 
     static async register(username: string, password: string) {
+        //Register a user (hash password first)
+        //Returns -- Username when user is created
+        //Throws -- BadRequest()
         const hashedPass = await hash(password, BCRYPT_WF);
 
         try {
