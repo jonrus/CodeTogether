@@ -1,5 +1,6 @@
 # Code Together!
 Code Together! Is a simple collaborative code editor, developed using a privacy first view. This app combines a single page, React frontend with an express driven backend.
+![Screen Shot of the APP](./code_together.png)
 
 ## Live Demo
 See a [live demo](https://code-2gether.herokuapp.com/) of the app deployed to [Heroku](https://www.heroku.com/)
