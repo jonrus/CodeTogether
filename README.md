@@ -6,6 +6,7 @@ See a [live demo](https://code-2gether.herokuapp.com/) of the app deployed to [H
 
 ## Database Schema
 Database is very simple, with only one table; 'users' to store usernames and (hashed) passwords.
+[image](./dbSchema.png)
 
 ## Frontend
 See the [frontend repo](https://github.com/jonrus/CodeTogether-Frontend) for all of it's commit history.
