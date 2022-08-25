@@ -3,7 +3,9 @@ Code Together! Is a simple collaborative code editor, developed using a privacy 
 ![Screen Shot of the APP](./code_together.png)
 
 ## Live Demo
-See a [live demo](https://code-2gether.herokuapp.com/) of the app deployed to [Heroku](https://www.heroku.com/)
+~~See a [live demo](https://code-2gether.herokuapp.com/) of the app deployed to [Heroku](https://www.heroku.com/)~~
+
+No live demo due to Heroku dropping free apps.
 
 ## Database Schema
 Database is very simple, with only one table; 'users' to store usernames and (hashed) passwords.
